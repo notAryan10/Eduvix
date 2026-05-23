@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card } from "@/components/ui/Card";
 import { FileUploader } from "@/components/dashboard/FileUploader";
+import Link from "next/link";
 import { 
   TrendingUp, 
   Clock, 
@@ -13,7 +14,9 @@ import {
   CheckCircle2,
   AlertCircle,
   Brain,
-  FileText
+  FileText,
+  Rocket,
+  ChevronRight
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { api } from "@/services/api";
@@ -83,7 +86,9 @@ export default function DashboardPage() {
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-black text-gray-900">Hey {data.user.name.split(' ')[0]}! 👋</h1>
+          <h1 className="text-3xl font-black text-gray-900">
+            Hey {data.user.name ? data.user.name.split(' ')[0] : 'Explorer'}! 👋
+          </h1>
           <p className="text-gray-500 mt-1">Ready to learn something new today?</p>
         </div>
 
@@ -106,6 +111,54 @@ export default function DashboardPage() {
                 </div>
               </Card>
             </motion.div>
+          ))}
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            {
+              title: "Adaptive Quiz",
+              desc: "Personalized questions from your PDFs",
+              icon: Rocket,
+              color: "blue",
+              bg: "bg-blue-50",
+              text: "text-blue-600",
+              href: "/quiz"
+            },
+            {
+              title: "Spelling Fun",
+              desc: "Master tricky words in science & history",
+              icon: BookOpen,
+              color: "purple",
+              bg: "bg-purple-50",
+              text: "text-purple-600",
+              href: "/spelling"
+            },
+            {
+              title: "Your Progress",
+              desc: "See how much you've learned",
+              icon: Award,
+              color: "green",
+              bg: "bg-green-50",
+              text: "text-green-600",
+              href: "/analytics"
+            }
+          ].map((action, i) => (
+            <Link key={i} href={action.href}>
+              <Card className="p-6 hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group border-transparent hover:border-gray-100">
+                <div className={`${action.bg} w-14 h-14 rounded-2xl flex items-center justify-center ${action.text} mb-6 group-hover:scale-110 transition-transform`}>
+                  <action.icon className="w-7 h-7" />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">{action.title}</h3>
+                    <p className="text-sm text-gray-500">{action.desc}</p>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-gray-900 group-hover:translate-x-1 transition-all" />
+                </div>
+              </Card>
+            </Link>
           ))}
         </div>
 

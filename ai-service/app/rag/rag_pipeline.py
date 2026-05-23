@@ -24,13 +24,19 @@ class RAGPipeline:
         Retrieves context and prepares an answer (ready for LLM integration).
         For now, returns retrieved context.
         """
+        # Reload vector store in case new PDFs were added
+        if not self.vector_store:
+             self.vector_store = load_vector_store(self.embeddings, self.persist_directory)
+
         if not self.vector_store:
             return {"error": "No documents processed yet."}
             
         retriever = get_retriever(self.vector_store)
         docs = retriever.invoke(query)
         
-        # In Phase 2, we return the context. Phase 3 will add the LLM generation.
+        # Filter out empty or very short docs
+        docs = [doc for doc in docs if len(doc.page_content.strip()) > 10]
+        
         context = "\n\n".join([doc.page_content for doc in docs])
         
         return {

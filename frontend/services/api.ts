@@ -48,5 +48,18 @@ export const api = {
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || "Upload failed");
     return data;
-  }
+  },
+
+  // Phase 3 Additions
+  generateQuiz: (subject: string, difficulty: string) => 
+    api.post("/quiz/generate", { subject, difficulty }),
+  
+  submitQuiz: (quizData: any) => 
+    api.post("/quiz/submit", quizData),
+    
+  checkSpelling: (spellingData: any) => 
+    api.post("/spelling/check", spellingData),
+    
+  getPerformance: () => 
+    api.get("/analytics/performance"),
 };

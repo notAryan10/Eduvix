@@ -37,11 +37,34 @@ const getDashboardData = async (req, res) => {
       .sort((a, b) => b.count - a.count)
       .slice(0, 3);
 
-    // Calculate some stats (placeholders for now if data is missing)
+    // Calculate real stats
     const totalQuizzes = quizAttempts.length;
     const avgScore = totalQuizzes > 0 
       ? Math.round(quizAttempts.reduce((acc, q) => acc + q.score, 0) / totalQuizzes) 
       : 0;
+
+    // Calculate daily progress (Today's activities / Daily Goal)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const todaysQuizzes = await QuizAttempt.countDocuments({ 
+      user: userId, 
+      createdAt: { $gte: today } 
+    });
+    const todaysSpellings = await SpellingTest.countDocuments({ 
+      user: userId, 
+      createdAt: { $gte: today } 
+    });
+    
+    const dailyGoal = 5;
+    const activitiesCompleted = todaysQuizzes + todaysSpellings;
+    const progressPercent = Math.min(Math.round((activitiesCompleted / dailyGoal) * 100), 100);
+
+    // Calculate total study time
+    const totalSeconds = quizAttempts.reduce((acc, q) => acc + (q.timeTaken || 0), 0);
+    const studyTimeStr = totalSeconds < 3600 
+      ? `${Math.round(totalSeconds / 60)}m` 
+      : `${(totalSeconds / 3600).toFixed(1)}h`;
 
     res.json({
       user: {
@@ -49,8 +72,8 @@ const getDashboardData = async (req, res) => {
         grade: user.grade,
       },
       stats: {
-        dailyProgress: "0%",
-        studyTime: "0h",
+        dailyProgress: `${progressPercent}%`,
+        studyTime: studyTimeStr,
         topicsMastered: totalQuizzes,
         avgScore: `${avgScore}%`,
       },

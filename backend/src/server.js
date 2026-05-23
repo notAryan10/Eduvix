@@ -66,6 +66,9 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
+app.use('/api/quiz', require('./routes/quizRoutes'));
+app.use('/api/spelling', require('./routes/spellingRoutes'));
+app.use('/api/analytics', require('./routes/analyticsRoutes'));
 
 // Basic route
 app.get('/', (req, res) => {
