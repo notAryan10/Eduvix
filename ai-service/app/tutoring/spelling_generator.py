@@ -17,7 +17,8 @@ class SpellingGenerator:
             subject = weak_topics[0] if weak_topics else "General Knowledge"
             
             # 2. Retrieve context
-            retrieval_result = rag_pipeline.answer_question(f"Important vocabulary and complex words in {subject}")
+            user_id = str(learning_profile.get("userId", "default"))
+            retrieval_result = rag_pipeline.answer_question(f"Important vocabulary and complex words in {subject}", user_id)
             context = retrieval_result.get("context", "")
             
             # 3. Prepare Prompt

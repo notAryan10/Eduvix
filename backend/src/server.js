@@ -72,6 +72,9 @@ app.use('/api/analytics', require('./routes/analyticsRoutes'));
 app.use('/api/tutor', require('./routes/tutorRoutes'));
 app.use('/api/learning', require('./routes/learningRoutes'));
 app.use('/api/revision', require('./routes/revisionRoutes'));
+app.use('/api/voice', require('./routes/voiceRoutes'));
+app.use('/api/gamification', require('./routes/gamificationRoutes'));
+app.use('/api/achievement', require('./routes/achievementRoutes'));
 
 // Basic route
 app.get('/', (req, res) => {

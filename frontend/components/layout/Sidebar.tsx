@@ -13,7 +13,9 @@ import {
   GraduationCap,
   TrendingUp,
   Sparkles,
-  Calendar
+  Calendar,
+  Trophy,
+  Volume2
 } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -25,6 +27,8 @@ function cn(...inputs: ClassValue[]) {
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "AI Tutor", href: "/tutor", icon: Sparkles },
+  { name: "Voice Mode", href: "/tutor/voice", icon: Volume2 },
+  { name: "Achievements", href: "/achievements", icon: Trophy },
   { name: "Revision", href: "/revision", icon: Calendar },
   { name: "Tests", href: "/dashboard/tests", icon: FileText },
   { name: "Topics", href: "/dashboard/topics", icon: BookOpen },

@@ -81,4 +81,23 @@ export const api = {
     
   updateLearningPreferences: (preferences: any) => 
     api.put("/learning/preferences", preferences),
+
+  // Phase 5 Additions
+  startVoiceSession: (topic: string) => 
+    api.post("/voice/start-session", { topic }),
+  
+  updateVoiceSession: (sessionId: string, role: string, content: string) => 
+    api.put(`/voice/session/${sessionId}`, { role, content }),
+
+  getGamificationProfile: () => 
+    api.get("/gamification/profile"),
+    
+  getAchievements: () => 
+    api.get("/achievement"),
+    
+  unlockAchievement: (achievementName: string) => 
+    api.post("/achievement/unlock", { achievementName }),
+
+  addXP: (source: string) => 
+    api.post("/gamification/add-xp", { source }),
 };

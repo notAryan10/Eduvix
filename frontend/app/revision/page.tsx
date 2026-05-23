@@ -74,9 +74,16 @@ export default function RevisionPage() {
             </div>
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-3xl border border-gray-100">
-            <p className="text-gray-500 font-medium">No revision plan found. Take a quiz to get started!</p>
-          </div>
+          <Card className="p-20 text-center border-dashed border-2 bg-gray-50/30">
+            <Sparkles className="w-16 h-16 text-blue-200 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-gray-900">Your Revision Plan is Ready to Grow!</h3>
+            <p className="text-gray-500 mt-2 max-w-md mx-auto">
+              Take a few quizzes first. Our AI will analyze your performance and build a personalized revision schedule just for you.
+            </p>
+            <Link href="/quiz">
+              <Button className="mt-8 h-12">Start Your First Quiz</Button>
+            </Link>
+          </Card>
         )}
       </div>
     </DashboardLayout>

@@ -7,19 +7,19 @@ class QuestionGenerator:
     def __init__(self, model_name="llama3"):
         self.model_name = model_name
 
-    def generate_quiz(self, subject, difficulty="medium", num_questions=5):
+    def generate_quiz(self, subject, difficulty="medium", num_questions=5, user_id="default"):
         """
         Generates a quiz based on the subject using the official Ollama library.
         """
         try:
             # 1. Retrieve context using RAG
-            print(f"\n--- AI SERVICE: Starting Quiz Gen for {subject} ---")
-            retrieval_result = rag_pipeline.answer_question(f"Educational content about {subject}")
+            print(f"\n--- AI SERVICE: Starting Quiz Gen for {subject} (User: {user_id}) ---")
+            retrieval_result = rag_pipeline.answer_question(f"Educational content about {subject}", user_id)
             context = retrieval_result.get("context", "")
             
             if not context:
                 print("DEBUG: Specific search failed, trying broad search...")
-                retrieval_result = rag_pipeline.answer_question("Key educational facts in this document")
+                retrieval_result = rag_pipeline.answer_question("Key educational facts in this document", user_id)
                 context = retrieval_result.get("context", "")
 
             if not context:

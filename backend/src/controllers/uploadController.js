@@ -30,7 +30,8 @@ const uploadPDF = async (req, res) => {
 
     // Run AI processing in background (optional, but good for UX)
     axios.post(`${aiServiceUrl}/api/rag/process-pdf`, {
-      file_path: absolutePath
+      file_path: absolutePath,
+      user_id: req.user.id
     }).catch(err => {
       console.error('AI Service processing error:', err.message);
     });

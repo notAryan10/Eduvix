@@ -1,18 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { api } from "@/services/api";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Brain, Rocket, CheckCircle, XCircle } from "lucide-react";
 
 export default function QuizPage() {
-  const [subject, setSubject] = useState("");
+  const searchParams = useSearchParams();
+  const [subject, setSubject] = useState(searchParams.get("subject") || "");
   const [quiz, setQuiz] = useState<any[] | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
+
+  useEffect(() => {
+    const s = searchParams.get("subject");
+    if (s) setSubject(s);
+  }, [searchParams]);
 
   const startQuiz = async () => {
     if (!subject) return;

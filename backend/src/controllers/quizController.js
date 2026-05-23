@@ -16,7 +16,8 @@ const generateQuiz = async (req, res) => {
     const response = await axios.post(`${aiServiceUrl}/api/quiz/generate-quiz`, {
       subject,
       difficulty: difficulty || 'medium',
-      num_questions: 5
+      num_questions: 5,
+      user_id: req.user.id
     }, {
       timeout: 120000 // 2 minutes timeout for local LLM
     });
@@ -93,7 +94,11 @@ const submitQuiz = async (req, res) => {
       questions
     });
 
-    res.status(201).json({ attempt, profile });
+    // 4. Add XP (Phase 5)
+    const xpService = require('../services/xpService');
+    const xpResult = await xpService.addXP(userId, 'QUIZ_COMPLETION');
+
+    res.status(201).json({ attempt, profile, xp: xpResult });
   } catch (error) {
     console.error('Quiz submission error:', error);
     res.status(500).json({ message: 'Server Error' });

@@ -12,7 +12,8 @@ class AdaptiveTutor:
         """
         try:
             # 1. Retrieve context using RAG
-            retrieval_result = rag_pipeline.answer_question(query)
+            user_id = str(learning_profile.get("userId", "default"))
+            retrieval_result = rag_pipeline.answer_question(query, user_id)
             context = retrieval_result.get("context", "")
             
             # 2. Get teaching style and difficulty

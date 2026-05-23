@@ -23,6 +23,7 @@ import {
 import { motion } from "framer-motion";
 import { api } from "@/services/api";
 import { AdaptiveDifficultyBadge } from "@/components/dashboard/AdaptiveDifficultyBadge";
+import { AICompanionCard } from "@/components/gamification/AICompanionCard";
 
 interface DashboardData {
   user: {
@@ -90,6 +91,12 @@ export default function DashboardPage() {
   return (
     <DashboardLayout>
       <div className="space-y-8">
+        {/* AI Companion Greeting */}
+        <AICompanionCard 
+          message={`Hi ${data.user.name ? data.user.name.split(' ')[0] : 'Explorer'}! You've mastered ${data.stats.topicsMastered} topics so far. Ready for a new mission?`} 
+          mood="happy"
+        />
+
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
@@ -186,7 +193,9 @@ export default function DashboardPage() {
             <section>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-gray-900">Recent Materials</h2>
-                <button className="text-sm font-semibold text-blue-600 hover:text-blue-700">View all</button>
+                <Link href="/dashboard/materials">
+                  <button className="text-sm font-semibold text-blue-600 hover:text-blue-700">View all</button>
+                </Link>
               </div>
               
               <div className="space-y-4 mb-6">

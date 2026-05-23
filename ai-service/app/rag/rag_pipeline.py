@@ -8,30 +8,31 @@ class RAGPipeline:
     def __init__(self, persist_directory="./chroma_db"):
         self.persist_directory = persist_directory
         self.embeddings = get_embeddings_model()
-        self.vector_store = load_vector_store(self.embeddings, self.persist_directory)
 
-    def process_new_pdf(self, file_path):
+    def process_new_pdf(self, file_path, user_id="default"):
         """
-        Processes a new PDF, creates embeddings, and updates the vector store.
+        Processes a new PDF, creates embeddings, and updates the vector store for a specific user.
         """
         documents = load_pdf(file_path)
         chunks = split_text(documents)
-        self.vector_store = create_vector_store(chunks, self.embeddings, self.persist_directory)
+        
+        # Use user_id as collection name to isolate data
+        collection_name = f"user_{user_id}"
+        
+        create_vector_store(chunks, self.embeddings, self.persist_directory, collection_name)
         return {"status": "success", "chunks_processed": len(chunks)}
 
-    def answer_question(self, query):
+    def answer_question(self, query, user_id="default"):
         """
         Retrieves context and prepares an answer (ready for LLM integration).
-        For now, returns retrieved context.
         """
-        # Reload vector store in case new PDFs were added
-        if not self.vector_store:
-             self.vector_store = load_vector_store(self.embeddings, self.persist_directory)
+        collection_name = f"user_{user_id}"
+        vector_store = load_vector_store(self.embeddings, self.persist_directory, collection_name)
 
-        if not self.vector_store:
-            return {"error": "No documents processed yet."}
+        if not vector_store:
+            return {"error": "No documents processed yet for this user."}
             
-        retriever = get_retriever(self.vector_store)
+        retriever = get_retriever(vector_store)
         docs = retriever.invoke(query)
         
         # Filter out empty or very short docs
@@ -40,7 +41,7 @@ class RAGPipeline:
         context = "\n\n".join([doc.page_content for doc in docs])
         
         return {
-            "answer": "This is a context-aware answer placeholder. Phase 3 will integrate the LLM.",
+            "answer": "Context retrieved successfully.",
             "context": context,
             "sources": [doc.metadata.get("source", "Unknown") for doc in docs]
         }

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { Card } from "@/components/ui/Card";
-import { TrendingUp, Award, AlertTriangle, BookOpen } from "lucide-react";
+import { TrendingUp, Award, AlertTriangle, BookOpen, Zap } from "lucide-react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function AnalyticsPage() {
@@ -46,23 +46,29 @@ export default function AnalyticsPage() {
           Your Learning Journey
         </h1>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-4 gap-8">
           <Card className="p-8 border-b-4 border-blue-500 bg-white">
             <Award className="w-12 h-12 text-blue-500 mb-4" />
-            <h3 className="text-lg text-gray-600 font-medium">Average Quiz Score</h3>
+            <h3 className="text-lg text-gray-600 font-medium">Quiz Score</h3>
             <p className="text-4xl font-black text-gray-900">{data.quizAccuracy}%</p>
           </Card>
           
           <Card className="p-8 border-b-4 border-green-500 bg-white">
             <BookOpen className="w-12 h-12 text-green-500 mb-4" />
-            <h3 className="text-lg text-gray-600 font-medium">Spelling Accuracy</h3>
+            <h3 className="text-lg text-gray-600 font-medium">Spelling</h3>
             <p className="text-4xl font-black text-gray-900">{data.spellingAccuracy}%</p>
           </Card>
 
           <Card className="p-8 border-b-4 border-purple-500 bg-white">
             <TrendingUp className="w-12 h-12 text-purple-500 mb-4" />
-            <h3 className="text-lg text-gray-600 font-medium">Difficulty Level</h3>
-            <p className="text-4xl font-black capitalize text-gray-900">{data.profile.preferredDifficulty || 'Medium'}</p>
+            <h3 className="text-lg text-gray-600 font-medium">Difficulty</h3>
+            <p className="text-4xl font-black capitalize text-gray-900">{data.profile.preferredDifficulty || 'Med'}</p>
+          </Card>
+
+          <Card className="p-8 border-b-4 border-orange-500 bg-white">
+            <Zap className="w-12 h-12 text-orange-500 mb-4" />
+            <h3 className="text-lg text-gray-600 font-medium">Learning Speed</h3>
+            <p className="text-4xl font-black capitalize text-gray-900">{data.profile.learningSpeed || 'Normal'}</p>
           </Card>
         </div>
 

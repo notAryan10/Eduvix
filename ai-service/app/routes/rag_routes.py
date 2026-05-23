@@ -7,9 +7,11 @@ router = APIRouter()
 
 class ProcessPDFRequest(BaseModel):
     file_path: str
+    user_id: Optional[str] = "default"
 
 class AskRequest(BaseModel):
     query: str
+    user_id: Optional[str] = "default"
 
 @router.post("/process-pdf")
 async def process_pdf(request: ProcessPDFRequest):
@@ -17,7 +19,7 @@ async def process_pdf(request: ProcessPDFRequest):
         raise HTTPException(status_code=404, detail="PDF file not found")
     
     try:
-        result = rag_pipeline.process_new_pdf(request.file_path)
+        result = rag_pipeline.process_new_pdf(request.file_path, request.user_id)
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -25,9 +27,10 @@ async def process_pdf(request: ProcessPDFRequest):
 @router.post("/ask")
 async def ask_question(request: AskRequest):
     try:
-        result = rag_pipeline.answer_question(request.query)
+        result = rag_pipeline.answer_question(request.query, request.user_id)
         if "error" in result:
-            raise HTTPException(status_code=400, detail=result["error"])
+            # Don't throw error, just return empty context
+            return {"answer": "I don't have any textbooks for you yet! Please upload a PDF to help me learn.", "context": "", "sources": []}
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
