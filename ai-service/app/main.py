@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.routes import rag_routes
 
 app = FastAPI(title="AI Learning Companion - AI Service")
 
@@ -11,6 +12,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include Routes
+app.include_router(rag_routes.router, prefix="/api/rag", tags=["RAG"])
 
 @app.get("/")
 async def root():

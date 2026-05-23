@@ -49,8 +49,8 @@ const getDashboardData = async (req, res) => {
         grade: user.grade,
       },
       stats: {
-        dailyProgress: "75%", // Placeholder for now
-        studyTime: "1.2h",    // Placeholder for now
+        dailyProgress: "0%",
+        studyTime: "0h",
         topicsMastered: totalQuizzes,
         avgScore: `${avgScore}%`,
       },

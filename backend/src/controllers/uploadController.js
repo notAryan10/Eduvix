@@ -1,28 +1,45 @@
 const UploadedPDF = require('../models/UploadedPDF');
+const axios = require('axios');
+const path = require('path');
 
 // @desc    Upload PDF and save metadata
 // @route   POST /api/upload
 // @access  Private
 const uploadPDF = async (req, res) => {
   if (!req.file) {
-    res.status(400);
-    throw new Error('Please upload a file');
+    return res.status(400).json({ message: 'Please upload a file' });
   }
 
   const { subject } = req.body;
 
   if (!subject) {
-    res.status(400);
-    throw new Error('Please add a subject');
+    return res.status(400).json({ message: 'Please add a subject' });
   }
 
-  const pdf = await UploadedPDF.create({
-    filename: req.file.filename,
-    subject,
-    uploadedBy: req.user.id,
-  });
+  try {
+    const pdf = await UploadedPDF.create({
+      originalName: req.file.originalname,
+      filename: req.file.filename,
+      subject,
+      uploadedBy: req.user.id,
+    });
 
-  res.status(201).json(pdf);
+    // Notify AI service to process the PDF
+    const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:8000';
+    const absolutePath = path.resolve(req.file.path);
+
+    // Run AI processing in background (optional, but good for UX)
+    axios.post(`${aiServiceUrl}/api/rag/process-pdf`, {
+      file_path: absolutePath
+    }).catch(err => {
+      console.error('AI Service processing error:', err.message);
+    });
+
+    res.status(201).json(pdf);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
 };
 
 module.exports = {
