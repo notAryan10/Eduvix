@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { api } from "@/services/api";
 import { Sparkles, Calendar, Rocket, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
 export default function RevisionPage() {
   const [plan, setPlan] = useState<any>(null);
