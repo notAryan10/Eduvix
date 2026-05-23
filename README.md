@@ -1,16 +1,56 @@
-# AI Learning Companion - Phase 1
+# Eduvix: The Intelligent AI Learning Companion
 
-This repository contains the foundational infrastructure for the AI Learning Companion platform.
+Eduvix is a comprehensive, personalized AI-powered learning ecosystem designed specifically for children. It transforms school materials into interactive adventures through advanced AI tutoring, immersive voice interaction, and a robust gamification system.
 
-## Project Structure
+## 🚀 Key Features
 
-- `frontend/`: Next.js application (App Router, TypeScript, TailwindCSS, Framer Motion)
+### 1. **Personalized AI Tutoring**
+- **RAG-Powered Intelligence**: Upload school textbooks (PDFs), and the AI will analyze and teach based on the actual curriculum.
+- **Adaptive Teaching Styles**: Choose from 5 different teaching modes: *Storytelling, Visual, Step-by-Step, Conversational,* or *Hint-Based*.
+- **Learning Memory**: The AI remembers your strong and weak topics to provide better help over time.
+
+### 2. **Immersive Voice Experience**
+- **Voice-to-Voice Interaction**: Talk directly to your AI Tutor using the built-in microphone.
+- **Natural Explanations**: Hear lessons explained in a friendly, kid-appropriate voice.
+- **Hands-Free Learning**: Ideal for oral quizzes and interactive spelling challenges.
+
+### 3. **Smart Gamification (XP & Achievements)**
+- **Level Up Your Brain**: Earn XP for every correct answer, finished quiz, or daily login.
+- **Trophy Room**: Unlock special achievements like *Math Master*, *Spelling Champion*, and *Science Explorer*.
+- **Daily Streaks**: Keep the flame alive by learning every day!
+
+### 4. **Adaptive Learning Engine**
+- **Dynamic Revision Planner**: Get a personalized "Daily Mission" focusing on topics you need to practice most.
+- **Automatic Difficulty Adjustment**: The platform grows with you, making quizzes more challenging as you improve.
+- **Mistake Analysis**: Tracks common mistake patterns to offer extra practice where it matters.
+
+## 🛠️ Project Structure
+
+- `frontend/`: Next.js 15 (App Router, TypeScript, TailwindCSS, Framer Motion)
 - `backend/`: Express.js server (Node.js, MongoDB, JWT Auth, Multer)
-- `ai-service/`: FastAPI service skeleton (Python)
+- `ai-service/`: FastAPI AI core (Python, LangChain, ChromaDB, Ollama/Llama 3)
 
-## Setup Instructions
+## ⚙️ Setup Instructions
 
-### Backend
+### AI Service (Required for Tutoring & Quizzes)
+
+1. **Install Ollama**: Ensure [Ollama](https://ollama.com/) is installed and running with `llama3` downloaded.
+2. Navigate to the `ai-service` directory:
+   ```bash
+   cd ai-service
+   ```
+3. Create a virtual environment and install dependencies:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   pip install -r requirements.txt
+   ```
+4. Start the AI core:
+   ```bash
+   python3 run.py
+   ```
+
+### Backend (Orchestration & Data)
 
 1. Navigate to the `backend` directory:
    ```bash
@@ -20,11 +60,12 @@ This repository contains the foundational infrastructure for the AI Learning Com
    ```bash
    npm install
    ```
-3. Create a `.env` file in the `backend` directory:
+3. Create a `.env` file (see `.env.example`):
    ```env
-   PORT=5000
-   MONGO_URI=your_mongodb_uri
-   JWT_SECRET=your_jwt_secret
+   PORT=5001
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_super_secret_key
+   AI_SERVICE_URL=http://localhost:8000
    NODE_ENV=development
    ```
 4. Start the server:
@@ -32,7 +73,7 @@ This repository contains the foundational infrastructure for the AI Learning Com
    npm run dev
    ```
 
-### Frontend
+### Frontend (User Interface)
 
 1. Navigate to the `frontend` directory:
    ```bash
@@ -42,35 +83,19 @@ This repository contains the foundational infrastructure for the AI Learning Com
    ```bash
    npm install
    ```
-3. Create a `.env.local` file in the `frontend` directory:
+3. Create a `.env.local` file:
    ```env
-   NEXT_PUBLIC_API_URL=http://localhost:5000/api
+   NEXT_PUBLIC_API_URL=http://localhost:5001/api
    ```
-4. Start the development server:
+4. Start the learning adventure:
    ```bash
    npm run dev
    ```
 
-### AI Service
+## 🏆 Development Phases
+- **Phase 1-3:** Core Infrastructure, RAG integration, and UI Foundations.
+- **Phase 4:** Adaptive Intelligence & Learning Memory.
+- **Phase 5:** Voice AI, Gamification (XP/Achievements), and Advanced Analytics.
 
-1. Navigate to the `ai-service` directory:
-   ```bash
-   cd ai-service
-   ```
-2. Create a virtual environment and install dependencies:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
-3. Start the service:
-   ```bash
-   python3 app/main.py
-   ```
-
-## Phase 1 Features
-
-- **Frontend:** Landing page, Login/Register forms, Dashboard with child-friendly UI, File upload component.
-- **Backend:** JWT Authentication, MongoDB models (User, PDF, Test, Quiz), File upload system (Multer), Error handling.
-- **AI Service:** Basic FastAPI skeleton.
-- **Architecture:** Clean, modular, and production-ready.
+---
+*Built with ❤️ to make learning fun for the next generation of explorers.*
