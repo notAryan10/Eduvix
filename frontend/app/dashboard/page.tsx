@@ -216,9 +216,11 @@ export default function DashboardPage() {
                           <p className="text-sm text-gray-500">Score: {quiz.score}% • {new Date(quiz.createdAt).toLocaleDateString()}</p>
                         </div>
                       </div>
-                      <button className="bg-gray-50 group-hover:bg-blue-500 group-hover:text-white px-4 py-2 rounded-xl text-sm font-bold transition-all">
-                        Review
-                      </button>
+                      <Link href={`/review/${quiz._id}`}>
+                        <button className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-xl text-sm font-bold transition-all shadow-md">
+                          Review
+                        </button>
+                      </Link>
                     </Card>
                   ))
                 ) : (

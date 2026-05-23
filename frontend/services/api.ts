@@ -62,4 +62,7 @@ export const api = {
     
   getPerformance: () => 
     api.get("/analytics/performance"),
+
+  getQuizAttempt: (id: string) => 
+    api.get(`/quiz/attempt/${id}`),
 };
