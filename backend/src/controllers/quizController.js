@@ -84,6 +84,15 @@ const submitQuiz = async (req, res) => {
 
     await profile.save();
 
+    // 3. Trigger Adaptive Learning Analysis (Phase 4)
+    const adaptiveLearningService = require('../services/adaptiveLearningService');
+    await adaptiveLearningService.analyzeStudentPerformance(userId, {
+      score,
+      timeTaken,
+      subject,
+      questions
+    });
+
     res.status(201).json({ attempt, profile });
   } catch (error) {
     console.error('Quiz submission error:', error);

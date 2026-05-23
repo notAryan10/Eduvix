@@ -12,12 +12,28 @@ const learningProfileSchema = mongoose.Schema(
       {
         topic: String,
         score: { type: Number, default: 0 },
+        lastTested: { type: Date, default: Date.now },
+        consecutiveMistakes: { type: Number, default: 0 }
       },
     ],
     strongTopics: [String],
     readingLevel: {
       type: String,
       default: 'Beginner',
+    },
+    learningSpeed: {
+      type: String,
+      enum: ['slow', 'medium', 'fast'],
+      default: 'medium'
+    },
+    preferredTeachingStyle: {
+      type: String,
+      enum: ['storytelling', 'visual', 'step-by-step', 'conversational', 'hint-based'],
+      default: 'conversational'
+    },
+    attentionSpan: {
+      type: Number, // in minutes
+      default: 20
     },
     averageScore: {
       type: Number,
@@ -32,7 +48,12 @@ const learningProfileSchema = mongoose.Schema(
       type: Number,
       default: 1, // in days
     },
-    lastUpdated: {
+    learningPatterns: {
+      mistakeTypes: [String],
+      preferredStudyTime: String,
+      averageSessionDuration: Number
+    },
+    lastActive: {
       type: Date,
       default: Date.now,
     },

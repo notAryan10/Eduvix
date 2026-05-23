@@ -16,15 +16,21 @@ import {
   Brain,
   FileText,
   Rocket,
-  ChevronRight
+  ChevronRight,
+  Calendar,
+  Sparkles
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { api } from "@/services/api";
+import { AdaptiveDifficultyBadge } from "@/components/dashboard/AdaptiveDifficultyBadge";
 
 interface DashboardData {
   user: {
     name: string;
     grade: string;
+  };
+  profile?: {
+    preferredDifficulty: "easy" | "medium" | "hard";
   };
   stats: {
     dailyProgress: string;
@@ -85,11 +91,14 @@ export default function DashboardPage() {
     <DashboardLayout>
       <div className="space-y-8">
         {/* Header */}
-        <div>
-          <h1 className="text-3xl font-black text-gray-900">
-            Hey {data.user.name ? data.user.name.split(' ')[0] : 'Explorer'}! 👋
-          </h1>
-          <p className="text-gray-500 mt-1">Ready to learn something new today?</p>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <h1 className="text-3xl font-black text-gray-900">
+              Hey {data.user.name ? data.user.name.split(' ')[0] : 'Explorer'}! 👋
+            </h1>
+            <p className="text-gray-500 mt-1">Ready to learn something new today?</p>
+          </div>
+          <AdaptiveDifficultyBadge difficulty={data.profile?.preferredDifficulty || "medium"} />
         </div>
 
         {/* Stats Grid */}
@@ -115,11 +124,11 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[
             {
               title: "Adaptive Quiz",
-              desc: "Personalized questions from your PDFs",
+              desc: "Personalized tests",
               icon: Rocket,
               color: "blue",
               bg: "bg-blue-50",
@@ -127,22 +136,31 @@ export default function DashboardPage() {
               href: "/quiz"
             },
             {
-              title: "Spelling Fun",
-              desc: "Master tricky words in science & history",
-              icon: BookOpen,
+              title: "Revision",
+              desc: "Daily study plan",
+              icon: Calendar,
+              color: "orange",
+              bg: "bg-orange-50",
+              text: "text-orange-600",
+              href: "/revision"
+            },
+            {
+              title: "AI Tutor",
+              desc: "24/7 help buddy",
+              icon: Sparkles,
               color: "purple",
               bg: "bg-purple-50",
               text: "text-purple-600",
-              href: "/spelling"
+              href: "/tutor"
             },
             {
-              title: "Your Progress",
-              desc: "See how much you've learned",
-              icon: Award,
+              title: "Spelling Fun",
+              desc: "Master tricky words",
+              icon: BookOpen,
               color: "green",
               bg: "bg-green-50",
               text: "text-green-600",
-              href: "/analytics"
+              href: "/spelling"
             }
           ].map((action, i) => (
             <Link key={i} href={action.href}>
@@ -232,20 +250,22 @@ export default function DashboardPage() {
 
           {/* Sidebar Area */}
           <div className="space-y-8">
-            <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-white border-none">
-              <div className="flex flex-col h-full">
-                <div className="bg-white/20 w-12 h-12 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-sm">
-                  <Brain className="w-6 h-6" />
+            <Link href="/tutor">
+              <Card className="bg-gradient-to-br from-blue-600 to-purple-600 text-white border-none cursor-pointer group">
+                <div className="flex flex-col h-full">
+                  <div className="bg-white/20 w-12 h-12 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-sm group-hover:scale-110 transition-transform">
+                    <Brain className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">AI Tutor Status</h3>
+                  <p className="text-blue-100 text-sm mb-6 leading-relaxed">
+                    Your personal AI Tutor is online and ready to help you with your homework!
+                  </p>
+                  <button className="w-full bg-white text-blue-600 font-bold py-3 rounded-2xl hover:bg-blue-50 transition-colors">
+                    Ask a Question
+                  </button>
                 </div>
-                <h3 className="text-xl font-bold mb-2">AI Tutor Status</h3>
-                <p className="text-blue-100 text-sm mb-6 leading-relaxed">
-                  Your personal AI Tutor is online and ready to help you with your homework!
-                </p>
-                <button className="w-full bg-white text-blue-600 font-bold py-3 rounded-2xl hover:bg-blue-50 transition-colors">
-                  Ask a Question
-                </button>
-              </div>
-            </Card>
+              </Card>
+            </Link>
 
             <section>
               <h2 className="text-xl font-bold text-gray-900 mb-4">Focus Topics</h2>

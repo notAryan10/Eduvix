@@ -1,22 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "@/services/api";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { BookOpen, Sparkles, CheckCircle2, XCircle, Volume2, Eye } from "lucide-react";
+import { BookOpen, Sparkles, CheckCircle2, XCircle, Volume2, Eye, RefreshCw } from "lucide-react";
 
 export default function SpellingPage() {
-  const words = ["Photosynthesis", "Atmosphere", "Metamorphosis", "Ecosystem", "Velocity"];
+  const [words, setWords] = useState<string[]>([]);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [showResult, setShowResult] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
   const [isPeeking, setIsPeeking] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const fetchWords = async () => {
+    setLoading(true);
+    try {
+      const data: any = await api.getSpellingWords();
+      setWords(data);
+      setCurrentWordIndex(0);
+      setScore(0);
+      setUserInput("");
+      setShowResult(null);
+    } catch (err) {
+      console.error("Failed to fetch adaptive words");
+      setWords(["Photosynthesis", "Atmosphere", "Metamorphosis", "Ecosystem", "Velocity"]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWords();
+  }, []);
 
   const speakWord = () => {
+    if (words.length === 0) return;
     const utterance = new SpeechSynthesisUtterance(words[currentWordIndex]);
-    utterance.rate = 0.8; // Speak slightly slower for clarity
+    utterance.rate = 0.8;
     window.speechSynthesis.speak(utterance);
   };
 
@@ -55,19 +78,35 @@ export default function SpellingPage() {
     }, 2000);
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-2xl mx-auto py-20 px-4 text-center">
-      <div className="mb-10">
-        <BookOpen className="w-16 h-16 text-purple-500 mx-auto mb-4" />
+      <div className="mb-10 flex flex-col items-center">
+        <BookOpen className="w-16 h-16 text-purple-500 mb-4" />
         <h1 className="text-3xl font-bold">Spelling Challenge</h1>
         <p className="text-gray-500">Listen to the word and type it correctly!</p>
+        <div className="inline-flex items-center gap-2 mt-4 bg-purple-50 px-4 py-2 rounded-full text-purple-600 text-sm font-bold">
+          <Sparkles className="w-4 h-4" /> AI Generated for You
+        </div>
       </div>
 
-      <Card className="p-12 shadow-2xl border-purple-100">
+      <Card className="p-12 shadow-2xl border-purple-100 bg-white">
         <div className="mb-10">
-          <span className="text-sm font-bold text-gray-400 block mb-6 uppercase tracking-widest">
-            Word {currentWordIndex + 1} of {words.length}
-          </span>
+          <div className="flex justify-between items-center mb-6">
+             <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+              Word {currentWordIndex + 1} of {words.length}
+            </span>
+            <button onClick={fetchWords} className="text-gray-400 hover:text-purple-600 transition-colors">
+              <RefreshCw className="w-4 h-4" />
+            </button>
+          </div>
           
           <div className="flex justify-center gap-4 mb-8">
             <Button 
@@ -94,7 +133,7 @@ export default function SpellingPage() {
               </p>
             ) : (
               <div className="flex gap-2">
-                {words[currentWordIndex].split('').map((_, i) => (
+                {words[currentWordIndex]?.split('').map((_, i) => (
                   <div key={i} className="w-6 h-1 bg-gray-200 rounded-full" />
                 ))}
               </div>

@@ -60,9 +60,25 @@ export const api = {
   checkSpelling: (spellingData: any) => 
     api.post("/spelling/check", spellingData),
     
+  getSpellingWords: () => 
+    api.get("/spelling/words"),
+    
   getPerformance: () => 
     api.get("/analytics/performance"),
 
   getQuizAttempt: (id: string) => 
     api.get(`/quiz/attempt/${id}`),
+
+  // Phase 4 Additions
+  tutorChat: (query: string, sessionId?: string, topic?: string) => 
+    api.post("/tutor/chat", { query, sessionId, topic }),
+  
+  getRevisionPlan: () => 
+    api.get("/revision/plan"),
+    
+  getLearningProfile: () => 
+    api.get("/learning/profile"),
+    
+  updateLearningPreferences: (preferences: any) => 
+    api.put("/learning/preferences", preferences),
 };
