@@ -51,53 +51,53 @@ export const api = {
   },
 
   // Phase 3 Additions
-  generateQuiz: (subject: string, difficulty: string) => 
+  generateQuiz: (subject: string, difficulty: string): Promise<any> => 
     api.post("/quiz/generate", { subject, difficulty }),
   
-  submitQuiz: (quizData: any) => 
+  submitQuiz: (quizData: any): Promise<any> => 
     api.post("/quiz/submit", quizData),
     
-  checkSpelling: (spellingData: any) => 
+  checkSpelling: (spellingData: any): Promise<any> => 
     api.post("/spelling/check", spellingData),
     
-  getSpellingWords: () => 
+  getSpellingWords: (): Promise<any> => 
     api.get("/spelling/words"),
     
-  getPerformance: () => 
+  getPerformance: (): Promise<any> => 
     api.get("/analytics/performance"),
 
-  getQuizAttempt: (id: string) => 
+  getQuizAttempt: (id: string): Promise<any> => 
     api.get(`/quiz/attempt/${id}`),
 
   // Phase 4 Additions
-  tutorChat: (query: string, sessionId?: string, topic?: string) => 
+  tutorChat: (query: string, sessionId?: string, topic?: string): Promise<any> => 
     api.post("/tutor/chat", { query, sessionId, topic }),
   
-  getRevisionPlan: () => 
+  getRevisionPlan: (): Promise<any> => 
     api.get("/revision/plan"),
     
-  getLearningProfile: () => 
+  getLearningProfile: (): Promise<any> => 
     api.get("/learning/profile"),
     
-  updateLearningPreferences: (preferences: any) => 
+  updateLearningPreferences: (preferences: any): Promise<any> => 
     api.put("/learning/preferences", preferences),
 
   // Phase 5 Additions
-  startVoiceSession: (topic: string) => 
+  startVoiceSession: (topic: string): Promise<any> => 
     api.post("/voice/start-session", { topic }),
   
-  updateVoiceSession: (sessionId: string, role: string, content: string) => 
+  updateVoiceSession: (sessionId: string, role: string, content: string): Promise<any> => 
     api.put(`/voice/session/${sessionId}`, { role, content }),
 
-  getGamificationProfile: () => 
+  getGamificationProfile: (): Promise<any> => 
     api.get("/gamification/profile"),
     
-  getAchievements: () => 
+  getAchievements: (): Promise<any> => 
     api.get("/achievement"),
     
-  unlockAchievement: (achievementName: string) => 
+  unlockAchievement: (achievementName: string): Promise<any> => 
     api.post("/achievement/unlock", { achievementName }),
 
-  addXP: (source: string) => 
+  addXP: (source: string): Promise<any> => 
     api.post("/gamification/add-xp", { source }),
 };

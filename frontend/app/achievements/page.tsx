@@ -25,12 +25,8 @@ export default function AchievementsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const results = await Promise.all([
-          api.getGamificationProfile(),
-          api.getAchievements()
-        ]);
-        const profileRes = results[0] as any;
-        const achRes = results[1] as any;
+        const profileRes = await api.getGamificationProfile() as any;
+        const achRes = await api.getAchievements() as any[];
         
         setProfile(profileRes);
         setAchievements(achRes);

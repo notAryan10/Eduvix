@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Card } from "@/components/ui/Card";
 import { api } from "@/services/api";
-import { FileText, Rocket, Trash2, Calendar, Clock } from "lucide-react";
+import { FileText, Rocket, Calendar, Clock } from "lucide-react";
 import Link from "next/link";
 import { FileUploader } from "@/components/dashboard/FileUploader";
 
