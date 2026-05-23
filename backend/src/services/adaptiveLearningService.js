@@ -26,15 +26,25 @@ const getTutorResponse = async (userId, query, sessionHistory = []) => {
   const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:8000';
 
   try {
+    console.log(`Sending request to AI Service at: ${aiServiceUrl}/api/tutor/adaptive-teach`);
     const response = await axios.post(`${aiServiceUrl}/api/tutor/adaptive-teach`, {
       query,
       learning_profile: profile,
       session_history: sessionHistory
+    }, {
+      timeout: 30000 // 30 seconds timeout
     });
 
     return response.data;
   } catch (error) {
-    console.error('Error getting tutor response:', error.message);
+    if (error.response) {
+      console.error('AI Service Error Data:', error.response.data);
+      console.error('AI Service Error Status:', error.response.status);
+    } else if (error.request) {
+      console.error('AI Service No Response:', error.request);
+    } else {
+      console.error('AI Service Request Setup Error:', error.message);
+    }
     throw error;
   }
 };

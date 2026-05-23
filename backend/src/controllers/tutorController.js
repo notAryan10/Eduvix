@@ -44,7 +44,11 @@ const chatWithTutor = async (req, res) => {
     });
   } catch (error) {
     console.error('Tutor chat error:', error.message);
-    res.status(500).json({ message: 'Failed to get tutor response' });
+    const detail = error.response?.data?.detail || error.response?.data?.message || error.message;
+    res.status(500).json({ 
+      message: 'Failed to get tutor response', 
+      error: detail 
+    });
   }
 };
 
