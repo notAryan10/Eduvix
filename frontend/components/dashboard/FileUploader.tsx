@@ -99,10 +99,15 @@ export function FileUploader() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex items-center gap-2 text-green-600 font-semibold text-sm"
+              className="flex flex-col items-center gap-2 text-green-600 font-semibold text-sm bg-green-50 p-4 rounded-2xl border border-green-100"
             >
-              <CheckCircle2 className="w-4 h-4" />
-              File uploaded successfully!
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4" />
+                File uploaded successfully!
+              </div>
+              <p className="text-[10px] text-green-700 font-medium text-center">
+                Our AI is currently analyzing your document. It will be ready for a quiz in about 30 seconds!
+              </p>
             </motion.div>
           )}
 

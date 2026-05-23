@@ -24,16 +24,21 @@ const uploadPDF = async (req, res) => {
       uploadedBy: req.user.id,
     });
 
-    // Notify AI service to process the PDF
+    // Notify AI service to process the PDF by forwarding the file
     const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:8000';
-    const absolutePath = path.resolve(req.file.path);
+    const FormData = require('form-data');
+    const fs = require('fs');
 
-    // Run AI processing in background (optional, but good for UX)
-    axios.post(`${aiServiceUrl}/api/rag/process-pdf`, {
-      file_path: absolutePath,
-      user_id: req.user.id
+    const form = new FormData();
+    form.append('user_id', req.user.id);
+    form.append('file', fs.createReadStream(req.file.path));
+
+    axios.post(`${aiServiceUrl}/api/rag/process-pdf`, form, {
+      headers: {
+        ...form.getHeaders()
+      }
     }).catch(err => {
-      console.error('AI Service processing error:', err.message);
+      console.error('AI Service processing error:', err.response?.data || err.message);
     });
 
     res.status(201).json(pdf);
