@@ -28,7 +28,7 @@ export default function AchievementsPage() {
         const [profileRes, achRes] = await Promise.all([
           api.getGamificationProfile(),
           api.getAchievements()
-        ]);
+        ]) as [any, any];
         setProfile(profileRes);
         setAchievements(achRes);
       } catch (err) {
