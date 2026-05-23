@@ -10,7 +10,8 @@ import {
   Settings, 
   HelpCircle,
   LogOut,
-  GraduationCap
+  GraduationCap,
+  TrendingUp
 } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -23,6 +24,7 @@ const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Tests", href: "/dashboard/tests", icon: FileText },
   { name: "Topics", href: "/dashboard/topics", icon: BookOpen },
+  { name: "Progress", href: "/analytics", icon: TrendingUp },
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
