@@ -1,7 +1,7 @@
-import ollama
 import json
 import re
 from app.rag.rag_pipeline import rag_pipeline
+from app.utils.llm_client import llm_client
 
 class SpellingGenerator:
     def __init__(self, model_name="llama3"):
@@ -9,7 +9,7 @@ class SpellingGenerator:
 
     def generate_spelling_words(self, learning_profile, num_words=5):
         """
-        Generates spelling words based on weak topics and document context.
+        Generates spelling words based on weak topics and document context using LLM client.
         """
         try:
             # 1. Get topics to focus on
@@ -35,12 +35,8 @@ class SpellingGenerator:
             - Format: ["Word1", "Word2", "Word3", "Word4", "Word5"]
             """
             
-            # 4. Call Ollama
-            response = ollama.generate(
-                model=self.model_name,
-                prompt=prompt_text,
-                stream=False
-            )
+            # 4. Call LLM Client
+            response = llm_client.generate(prompt=prompt_text)
             
             raw_content = response['response']
             

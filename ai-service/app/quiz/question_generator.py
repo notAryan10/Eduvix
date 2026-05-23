@@ -1,7 +1,7 @@
 import json
 import re
-import ollama
 from app.rag.rag_pipeline import rag_pipeline
+from app.utils.llm_client import llm_client
 
 class QuestionGenerator:
     def __init__(self, model_name="llama3"):
@@ -9,7 +9,7 @@ class QuestionGenerator:
 
     def generate_quiz(self, subject, difficulty="medium", num_questions=5, user_id="default"):
         """
-        Generates a quiz based on the subject using the official Ollama library.
+        Generates a quiz based on the subject using the LLM client.
         """
         try:
             # 1. Retrieve context using RAG
@@ -39,13 +39,9 @@ class QuestionGenerator:
             - Format: [{{ "question": "...", "type": "MCQ", "options": ["...", "...", "...", "..."], "correctAnswer": "...", "explanation": "..." }}]
             """
             
-            # 3. Call Official Ollama Library
-            print(f"DEBUG: Sending request to Ollama ({self.model_name})...")
-            response = ollama.generate(
-                model=self.model_name,
-                prompt=prompt_text,
-                stream=False
-            )
+            # 3. Call LLM Client
+            print("DEBUG: Sending request to LLM Client...")
+            response = llm_client.generate(prompt=prompt_text)
             
             raw_content = response['response']
             print(f"DEBUG: Raw response received ({len(raw_content)} chars).")
@@ -62,16 +58,8 @@ class QuestionGenerator:
             return quiz_data[:num_questions]
             
         except Exception as e:
-            error_msg = f"Ollama Error: {str(e)}"
+            error_msg = f"LLM Error: {str(e)}"
             print(f"ERROR: {error_msg}")
-            # Try a quick fallback to 'llama3:latest' if the first one fails
-            if "not found" in str(e).lower() and self.model_name == "llama3":
-                print("DEBUG: llama3 not found, trying llama3:latest...")
-                self.model_name = "llama3:latest"
-                return self.generate_quiz(subject, difficulty, num_questions)
-                
             raise Exception(error_msg)
-
-question_generator = QuestionGenerator()
 
 question_generator = QuestionGenerator()

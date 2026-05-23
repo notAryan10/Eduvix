@@ -1,6 +1,6 @@
-import ollama
 from app.rag.rag_pipeline import rag_pipeline
 from app.tutoring.teaching_style_engine import teaching_style_engine
+from app.utils.llm_client import llm_client
 
 class AdaptiveTutor:
     def __init__(self, model_name="llama3"):
@@ -8,7 +8,7 @@ class AdaptiveTutor:
 
     def generate_response(self, query, learning_profile, session_history=None):
         """
-        Generates a personalized tutoring response based on student's profile.
+        Generates a personalized tutoring response based on student's profile using LLM client.
         """
         try:
             # 1. Retrieve context using RAG
@@ -45,12 +45,8 @@ class AdaptiveTutor:
                 messages.extend(session_history)
             messages.append({"role": "user", "content": prompt_text})
             
-            # 4. Call Ollama
-            response = ollama.chat(
-                model=self.model_name,
-                messages=messages,
-                stream=False
-            )
+            # 4. Call LLM Client
+            response = llm_client.chat(messages=messages)
             
             return {
                 "answer": response['message']['content'],
