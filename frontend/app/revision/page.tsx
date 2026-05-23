@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { RevisionCard } from "@/components/revision/RevisionCard";
+import { Card } from "@/components/ui/Card";
 import { api } from "@/services/api";
 import { Sparkles, Calendar, Rocket, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/Button";
