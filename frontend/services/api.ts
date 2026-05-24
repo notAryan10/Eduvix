@@ -17,7 +17,8 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Something went wrong");
+    const errorMsg = data.error || data.message || "Something went wrong";
+    throw new Error(errorMsg);
   }
 
   return data;
