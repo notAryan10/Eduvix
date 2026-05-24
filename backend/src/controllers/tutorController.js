@@ -44,7 +44,17 @@ const chatWithTutor = async (req, res) => {
     });
   } catch (error) {
     console.error('Tutor chat error:', error.message);
-    const detail = error.response?.data?.detail || error.response?.data?.message || error.message;
+    let detail = error.message;
+    
+    if (error.response) {
+      // AI Service actually responded with an error
+      detail = error.response.data?.detail || error.response.data?.message || JSON.stringify(error.response.data);
+    } else if (error.code === 'ECONNABORTED') {
+      detail = "AI Service took too long (Timeout)";
+    } else if (error.code === 'ENOTFOUND') {
+      detail = `AI Service URL not found: ${process.env.AI_SERVICE_URL}`;
+    }
+
     res.status(500).json({ 
       message: 'Failed to get tutor response', 
       error: detail 

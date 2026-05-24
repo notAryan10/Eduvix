@@ -9,3 +9,6 @@ pypdf
 requests
 groq
 python-multipart
+boto3
+pinecone-client
+langchain-pinecone

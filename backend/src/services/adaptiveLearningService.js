@@ -26,7 +26,9 @@ const getTutorResponse = async (userId, query, sessionHistory = []) => {
   const aiServiceUrl = process.env.AI_SERVICE_URL || 'http://localhost:8000';
 
   try {
-    console.log(`Sending request to AI Service at: ${aiServiceUrl}/api/tutor/adaptive-teach`);
+    console.log(`[DEBUG] Attempting AI Request to: ${aiServiceUrl}`);
+    console.log(`[DEBUG] AI_SERVICE_URL length: ${aiServiceUrl.length}`);
+    
     const response = await axios.post(`${aiServiceUrl}/api/tutor/adaptive-teach`, {
       query,
       learning_profile: profile,
